@@ -16,35 +16,29 @@
  */
 package com.gemstone.gemfire.internal.util;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.bcel.classfile.Field;
-import org.apache.bcel.generic.InstructionFactory;
-import org.apache.bcel.generic.InstructionHandle;
-import org.junit.Ignore;
 import org.apache.bcel.Constants;
+import org.apache.bcel.classfile.Field;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.ClassGen;
 import org.apache.bcel.generic.ConstantPoolGen;
 import org.apache.bcel.generic.FieldGen;
-import org.apache.bcel.generic.GETFIELD;
-import org.apache.bcel.generic.Instruction;
+import org.apache.bcel.generic.InstructionFactory;
+import org.apache.bcel.generic.InstructionHandle;
 import org.apache.bcel.generic.InstructionList;
 import org.apache.bcel.generic.MethodGen;
-import org.apache.bcel.generic.PUTFIELD;
 import org.apache.bcel.generic.Type;
 import org.junit.After;
 import org.junit.Before;
@@ -54,14 +48,12 @@ import org.junit.experimental.categories.Category;
 import com.gemstone.gemfire.test.junit.categories.UnitTest;
 
 /**
- * Tests the ability of the {@code DeserializerDelegate} to load
- * "user" classes from the current context class loader.  See bug
- * 29637.
+ * Unit tests for {@link BlobHelper}.
  *
  * @since 2.0.2
  */
 @Category(UnitTest.class)
-public class DeserializerJUnitTest {
+public class BlobHelperTest {
 
   private static final String CLASS_NAME_SERIALIZABLE_IMPL = "com.gemstone.gemfire.internal.util.SerializableImpl";
   private static final String CLASS_NAME_SERIALIZABLE_IMPL_WITH_VALUE = "com.gemstone.gemfire.internal.util.SerializableImplWithValue";
