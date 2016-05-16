@@ -48,12 +48,12 @@ import org.junit.experimental.categories.Category;
 import com.gemstone.gemfire.test.junit.categories.UnitTest;
 
 /**
- * Unit tests for {@link BlobHelper}.
+ * Unit tests for {@link BlobHelper} with Thread Context ClassLoader.
  *
  * @since 2.0.2
  */
 @Category(UnitTest.class)
-public class BlobHelperTest {
+public class BlobHelperWithThreadContextClassLoaderTest {
 
   private static final String CLASS_NAME_SERIALIZABLE_IMPL = "com.gemstone.gemfire.internal.util.SerializableImpl";
   private static final String CLASS_NAME_SERIALIZABLE_IMPL_WITH_VALUE = "com.gemstone.gemfire.internal.util.SerializableImplWithValue";
@@ -75,7 +75,7 @@ public class BlobHelperTest {
   }
 
   @Test
-  public void thisTestGeneratesSerializableImpl() throws Exception {
+  public void tcclLoadsSerializableImpl() throws Exception {
     Class loadedClass = Class.forName(CLASS_NAME_SERIALIZABLE_IMPL, true, Thread.currentThread().getContextClassLoader());
     assertThat(loadedClass).isNotNull();
     assertThat(loadedClass.getName()).isEqualTo(CLASS_NAME_SERIALIZABLE_IMPL);
@@ -87,7 +87,7 @@ public class BlobHelperTest {
   }
 
   @Test
-  public void thisTestGeneratesSerializableImplWithValue() throws Exception {
+  public void tcclLoadsSerializableImplWithValue() throws Exception {
     Class loadedClass = Class.forName(CLASS_NAME_SERIALIZABLE_IMPL_WITH_VALUE, true, Thread.currentThread().getContextClassLoader());
     assertThat(loadedClass).isNotNull();
     assertThat(loadedClass.getName()).isEqualTo(CLASS_NAME_SERIALIZABLE_IMPL_WITH_VALUE);
