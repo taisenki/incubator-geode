@@ -16,22 +16,20 @@
  */
 package com.gemstone.gemfire.internal.util;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * A {@link Serializable} class that is loaded by a class loader other
  * than the one that is used to load test classes.
- *
  *
  * @since 2.0.1
  */
 public class SerializableImpl implements Serializable {
 
   /**
-   * Creates a new <code>SerializableImpl</code>
+   * Creates a new {@code SerializableImpl}
    */
   public SerializableImpl() {
-
   }
 
 }

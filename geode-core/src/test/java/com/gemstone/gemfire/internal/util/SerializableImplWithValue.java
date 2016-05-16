@@ -16,17 +16,12 @@
  */
 package com.gemstone.gemfire.internal.util;
 
-//import java.io.*;
-
 /**
- * A {@link SerializableImpl} that implements an interface and has
- * some object state.
- *
+ * A {@link SerializableImpl} that implements an interface and has some object state.
  *
  * @since 2.0.3
  */
-public class SerializableImplWithValue extends SerializableImpl 
-  implements Valuable {
+public class SerializableImplWithValue extends SerializableImpl implements Valuable {
 
   /** This object's state */
   private Object value;
@@ -35,12 +30,10 @@ public class SerializableImplWithValue extends SerializableImpl
    * Zero-argument constructor
    */
   public SerializableImplWithValue() {
-
   }
 
   /**
-   * Creates a new <code>SerializableImplWithValue</code> with a given
-   * value
+   * Creates a new {@code SerializableImplWithValue} with a given value
    */
   public SerializableImplWithValue(Object value) {
     this.value = value;
