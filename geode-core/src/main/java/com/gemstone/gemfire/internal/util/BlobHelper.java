@@ -123,6 +123,9 @@ public class BlobHelper {
     return result;
   }
 
+  /**
+   * Unused
+   */
   public static Object deserializeBuffer(ByteArrayDataInput in, int numBytes) throws IOException, ClassNotFoundException {
     final long start = startDeserialization();
     Object result = DataSerializer.readObject(in);
