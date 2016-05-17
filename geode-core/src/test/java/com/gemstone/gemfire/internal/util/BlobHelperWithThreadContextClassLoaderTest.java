@@ -16,7 +16,7 @@
  */
 package com.gemstone.gemfire.internal.util;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -243,45 +243,53 @@ public class BlobHelperWithThreadContextClassLoaderTest {
       ConstantPoolGen cp = cg.getConstantPool();
       InstructionFactory fac = new InstructionFactory(cg, cp);
 
-      // constructor
-      cg.addEmptyConstructor(Constants.ACC_PUBLIC);
-
       // field
       FieldGen fg = new FieldGen(Constants.ACC_PRIVATE, Type.OBJECT, VALUE, cp);
       Field field = fg.getField();
       cg.addField(field);
 
-      // setter
-      //   0: aload_0
-      //   1: aload_1
-      //   2: putfield #2; //Field value:Ljava/lang/Object;
-      //   5: return
-      InstructionList setter = new InstructionList();
-      MethodGen setterMethod = new MethodGen(Constants.ACC_PUBLIC, Type.VOID, new Type[] {Type.OBJECT}, new String[] {field.getName()}, SET_VALUE, CLASS_NAME_SERIALIZABLE_IMPL_WITH_VALUE, setter, cp);
-      setterMethod.setMaxStack(2);
+      // empty constructor
+      cg.addEmptyConstructor(Constants.ACC_PUBLIC);
 
-      InstructionHandle setter_ih_0 = setter.append(fac.createLoad(Type.OBJECT, 0)); // 0: aload_0 this
-      InstructionHandle setter_ih_1 = setter.append(fac.createLoad(Type.OBJECT, 1)); // 1: aload_1 value
-      InstructionHandle setter_ih_2 = setter.append(fac.createPutField(cg.getClassName(), field.getName(), Type.getType(field.getSignature()))); // 2: putfield #2 stack to field
-      InstructionHandle setter_ih_0_ih_5 = setter.append(fac.createReturn(Type.VOID)); // 5: return void
+      // constructor with arg
+      InstructionList ctor = new InstructionList();
+      MethodGen ctorMethod = new MethodGen(Constants.ACC_PUBLIC, Type.VOID, new Type[] { Type.OBJECT }, new String[] { "arg0" }, "<init>", "com.gemstone.gemfire.internal.util.bcel.SerializableImplWithValue", ctor, cp);
+      ctorMethod.setMaxStack(2);
 
-      cg.addMethod(setterMethod.getMethod());
-      setter.dispose();
+      InstructionHandle ctor_ih_0 = ctor.append(fac.createLoad(Type.OBJECT, 0));
+      ctor.append(fac.createInvoke(CLASS_NAME_SERIALIZABLE_IMPL, "<init>", Type.VOID, Type.NO_ARGS, Constants.INVOKESPECIAL));
+      InstructionHandle ctor_ih_4 = ctor.append(fac.createLoad(Type.OBJECT, 0));
+      ctor.append(fac.createLoad(Type.OBJECT, 1));
+      ctor.append(fac.createFieldAccess(CLASS_NAME_SERIALIZABLE_IMPL_WITH_VALUE, "value", Type.OBJECT, Constants.PUTFIELD));
+      InstructionHandle ctor_ih_9 = ctor.append(fac.createReturn(Type.VOID));
+
+      cg.addMethod(ctorMethod.getMethod());
+      ctor.dispose();
 
       // getter
-      //   0: aload_0
-      //   1: getfield #2; //Field value:Ljava/lang/Object;
-      //   4: areturn
       InstructionList getter = new InstructionList();
       MethodGen getterMethod = new MethodGen(Constants.ACC_PUBLIC, Type.OBJECT, null, null, GET_VALUE, CLASS_NAME_SERIALIZABLE_IMPL_WITH_VALUE, getter, cp);
       getterMethod.setMaxStack(1);
 
-      InstructionHandle getter_ih_0 = getter.append(fac.createLoad(Type.OBJECT, 0)); // 0: aload_0 this
-      InstructionHandle getter_ih_1 = getter.append(fac.createGetField(cg.getClassName(), field.getName(), Type.getType(field.getSignature()))); // 1: getfield #2 field to stack
-      InstructionHandle getter_ih_4 = getter.append(fac.createReturn(Type.OBJECT)); // 4: areturn Object
+      InstructionHandle getter_ih_0 = getter.append(fac.createLoad(Type.OBJECT, 0));
+      InstructionHandle getter_ih_1 = getter.append(fac.createGetField(cg.getClassName(), field.getName(), Type.getType(field.getSignature())));
+      InstructionHandle getter_ih_4 = getter.append(fac.createReturn(Type.OBJECT));
 
       cg.addMethod(getterMethod.getMethod());
       getter.dispose();
+
+      // setter
+      InstructionList setter = new InstructionList();
+      MethodGen setterMethod = new MethodGen(Constants.ACC_PUBLIC, Type.VOID, new Type[] {Type.OBJECT}, new String[] {field.getName()}, SET_VALUE, CLASS_NAME_SERIALIZABLE_IMPL_WITH_VALUE, setter, cp);
+      setterMethod.setMaxStack(2);
+
+      InstructionHandle setter_ih_0 = setter.append(fac.createLoad(Type.OBJECT, 0));
+      InstructionHandle setter_ih_1 = setter.append(fac.createLoad(Type.OBJECT, 1));
+      InstructionHandle setter_ih_2 = setter.append(fac.createPutField(cg.getClassName(), field.getName(), Type.getType(field.getSignature())));
+      InstructionHandle setter_ih_0_ih_5 = setter.append(fac.createReturn(Type.VOID));
+
+      cg.addMethod(setterMethod.getMethod());
+      setter.dispose();
 
       JavaClass jClazz = cg.getJavaClass();
       byte[] bytes = jClazz.getBytes();
@@ -295,3 +303,4 @@ public class BlobHelperWithThreadContextClassLoaderTest {
     }
   }
 }
+
