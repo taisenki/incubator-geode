@@ -17,7 +17,6 @@
 package com.gemstone.gemfire.internal.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -111,7 +110,7 @@ public class BlobHelperWithThreadContextClassLoaderTest {
    * classes).
    */
   @Test
-  public void serializesAndDeserializesClassFromOtherClassLoader() throws Exception {
+  public void handlesClassFromOtherClassLoader() throws Exception {
     Class loadedClass = Class.forName(CLASS_NAME_SERIALIZABLE_IMPL, true, Thread.currentThread().getContextClassLoader());
 
     Object instance = loadedClass.newInstance();
@@ -131,7 +130,7 @@ public class BlobHelperWithThreadContextClassLoaderTest {
    * Tests that the deserialized object has the correct state
    */
   @Test
-  public void serializesAndDeserializesObjectWithState() throws Exception {
+  public void handlesObjectWithStateFromOtherClassLoader() throws Exception {
     Class loadedClass = Class.forName(CLASS_NAME_SERIALIZABLE_IMPL_WITH_VALUE, true, Thread.currentThread().getContextClassLoader());
 
     Constructor ctor = loadedClass.getConstructor(new Class[] {Object.class});
@@ -141,7 +140,6 @@ public class BlobHelperWithThreadContextClassLoaderTest {
     byte[] bytes = BlobHelper.serializeToBlob(instance);
 
     Valuable object = (Valuable) BlobHelper.deserializeBlob(bytes);
-    assertEquals(instance.getValue(), object.getValue());
     assertThat(object.getValue()).isEqualTo(instance.getValue());
   }
 
