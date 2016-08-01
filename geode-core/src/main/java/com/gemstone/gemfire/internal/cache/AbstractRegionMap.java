@@ -2811,7 +2811,7 @@ public abstract class AbstractRegionMap implements RegionMap {
     if (expectedOldValue != null && !replaceOnClient) {
       ReferenceCountHelper.skipRefCountTracking();
       
-      @Retained @Released Object v = re._getValueRetain(event.getLocalRegion(), true);
+      @Retained @Released Object v = re.getValueOffHeapOrDiskWithoutFaultIn(event.getLocalRegion());
       
       ReferenceCountHelper.unskipRefCountTracking();
       try {
